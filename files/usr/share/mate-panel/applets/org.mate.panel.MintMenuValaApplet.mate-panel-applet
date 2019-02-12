@@ -1,0 +1,13 @@
+[Applet Factory]
+Id=MintMenuValaAppletFactory
+InProcess=false
+Location=/usr/bin/mintmenu-vala
+Name=MintMenuVala Applet Factory
+Description=Advanced Menu VALA
+
+[MintMenuValaApplet]
+Name=mintMenu Vala
+Description=Advanced Menu VALA
+Icon=mintmenu
+MateComponentId=OAFIID:MATE_MintMenuValaApplet;
+

@@ -1,0 +1,22 @@
+Source: mintmenu-vala
+Section: x11
+Priority: optional
+Maintainer: Linux Mint <root@linuxmint.com>
+Build-Depends: debhelper (>= 9),
+               meson,
+               dh-python,
+               gnome-common,
+               gnome-pkg-tools,
+               gobject-introspection (>= 0.9.12-4~),
+               intltool (>= 0.40.0),
+               libgirepository1.0-dev (>= 0.10.7-1~),
+               libglib2.0-dev (>= 2.30.0),
+               libmate-panel-applet-dev
+Standards-Version: 3.9.5
+X-Python3-Version: >= 3.1
+
+Package: mintmenu-vala
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: MINTMENU vala
+ mintmenu vala.
