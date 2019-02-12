@@ -12,8 +12,16 @@ dependencies = [
 
 add_project_arguments(['--vapidir', vapi_dir], language: 'vala')
 
+cflags = [
+    '-DGETTEXT_PACKAGE="mintmenu"',
+    '-DLOCALEDIR="/usr/share/linuxmint/locale"',
+]
+
+add_global_arguments(cflags, language: 'c')
+
 sources = files('mintmenu.vala')
 
 executable('mintmenu-vala', sources, dependencies: dependencies, install : true, install_dir : '/usr/bin')
 
 subdir('files')
+
