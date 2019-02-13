@@ -143,9 +143,6 @@ public class MintMenu {
 
 private bool factory_callback(MatePanel.Applet applet, string iid)
 {
-    if (iid != "MintMenuValaApplet") {
-        return false;
-    }
     print("Loading applet\n");
 
     MintMenu menu = new MintMenu(applet);
