@@ -16,6 +16,8 @@ public class MintMenu {
         this.applet = applet;
         this.window = new Gtk.Window();
         this.window.set_decorated(false);
+        this.window.set_skip_pager_hint(true);
+        this.window.set_skip_taskbar_hint(true);
 
         this.button_label = new Gtk.Label(_("Menu"));
         this.button_label.set_text("NO");
