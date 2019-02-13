@@ -1,0 +1,5 @@
+#!/bin/bash
+
+mate-terminal --maximize -e mintmenu-vala
+
+mate-panel-test-applets --iid MintMenuValaAppletFactory::MintMenuValaApplet
