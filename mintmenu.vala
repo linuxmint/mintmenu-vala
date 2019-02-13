@@ -15,6 +15,7 @@ public class MintMenu {
     public MintMenu(MatePanel.Applet applet) {
         this.applet = applet;
         this.window = new Gtk.Window();
+        this.window.set_decorated(false);
 
         this.button_label = new Gtk.Label(_("Menu"));
         this.button_label.set_text("NO");
@@ -27,7 +28,7 @@ public class MintMenu {
 
         this.window.map_event.connect(this.onWindowMap);
         this.window.unmap_event.connect(this.onWindowUnmap);
-        // this.window.size_allocate.connect(this.positionMenu);
+        this.window.size_allocate.connect(this.positionMenu);
 
         this.applet.add(this.button_box);
         this.applet.show_all();
@@ -58,6 +59,83 @@ public class MintMenu {
         this.applet.get_style_context().set_state(Gtk.StateFlags.NORMAL);
         this.button_box.get_style_context().set_state(Gtk.StateFlags.NORMAL);
         return false;
+    }
+
+    public void positionMenu(Gtk.Widget widget, Allocation allocation2) {
+        print("POSITIONING\n");
+        int ourWidth, ourHeight, entryX, entryY, entryHeight, entryWidth, newX, newY;
+        int offset = 2;
+
+        // Get our own dimensions & position
+        this.window.get_size(out ourWidth, out ourHeight);
+        ourHeight = ourHeight + offset;
+
+        // Get the dimensions/position of the widgetToAlignWith
+        this.applet.get_window().get_origin(out entryX, out entryY);
+
+        Gtk.Allocation allocation;
+        this.applet.get_allocation(out allocation);
+        entryWidth = allocation.width;
+        entryHeight = allocation.height + offset;
+
+        // Get the monitor dimensions
+        Gdk.Display display = this.applet.get_display();
+        Gdk.Monitor monitor = display.get_monitor_at_window(this.applet.get_window());
+        Gdk.Rectangle monitorGeometry = monitor.get_geometry();
+
+        int applet_orient = this.applet.get_orient();
+        if (applet_orient == MatePanel.AppletOrient.UP) {
+            newX = entryX;
+            newY = entryY - ourHeight;
+        }
+        else if (applet_orient == MatePanel.AppletOrient.DOWN) {
+            newX = entryX;
+            newY = entryY + entryHeight;
+        }
+        else if (applet_orient == MatePanel.AppletOrient.RIGHT) {
+            newX = entryX + entryWidth;
+            newY = entryY;
+        }
+        else {
+            newX = entryX - ourWidth;
+            newY = entryY;
+        }
+
+        // Adjust for offset if we reach the end of the screen
+        // Bind to the right side
+        if (newX + ourWidth > (monitorGeometry.x + monitorGeometry.width)) {
+            newX = (monitorGeometry.x + monitorGeometry.width) - ourWidth;
+            if (applet_orient == MatePanel.AppletOrient.LEFT) {
+                newX -= entryWidth;
+            }
+        }
+
+        // Bind to the left side
+        if (newX < monitorGeometry.x) {
+            newX = monitorGeometry.x;
+            if (applet_orient == MatePanel.AppletOrient.RIGHT) {
+                newX -= entryWidth;
+            }
+        }
+
+        // Bind to the bottom
+        if (newY + ourHeight > (monitorGeometry.y + monitorGeometry.height)) {
+            newY = (monitorGeometry.y + monitorGeometry.height) - ourHeight;
+            if (applet_orient == MatePanel.AppletOrient.UP) {
+                newY -= entryHeight;
+            }
+        }
+
+        // Bind to the top
+        if (newY < monitorGeometry.y) {
+            newY = monitorGeometry.y;
+            if (applet_orient == MatePanel.AppletOrient.DOWN) {
+                newY -= entryHeight;
+            }
+        }
+
+        // Move window
+        this.window.move(newX, newY);
     }
 }
 
